@@ -17,4 +17,11 @@ CHIP Mux4Way16 {
 
     PARTS:
     // Put your code here:
+	
+	// a or b: when sel[0] is 0 or or 1 out is a or b
+	Mux16(a=a, b=b, sel=sel[0], out=aOrb);
+	// c or d: when sel[1] is 0 or 1 out is c or d
+	Mux16(a=c, b=d, sel=sel[0], out=cOrd);
+	
+	Mux16(a=aOrb, b=cOrd, sel=sel[1], out=out);
 }
