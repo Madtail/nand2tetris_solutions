@@ -44,10 +44,16 @@ CHIP ALU {
     PARTS:
    // Put you code here:
    // Preset x input, zx and nx bits
-   
+   Mux16(a=x, b[0]=0, sel=zx, out=ox);
+   // Invert x
+   Not16(in=ox, out=nox);
+   Mux16(a=ox, b=nox, sel=nx, out=pre_x);
    
    // Preset y input, zy and ny bits
-   
+    Mux16(a=x, b[0]=0, sel=zx, out=ox);
+   // Invert y
+   Not16(in=ox, out=nox);
+   Mux16(a=ox, b=nox, sel=nx, out=pre_x);
    
    // Select between + / And, f bit
    
