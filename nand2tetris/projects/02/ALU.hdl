@@ -43,4 +43,23 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+   // Preset x input, zx and nx bits
+   
+   
+   // Preset y input, zy and ny bits
+   
+   
+   // Select between + / And, f bit
+   
+   
+   // Output result, out= f(x,y) = either And(x, y) or And16(x, y), zr=1 if out=0, ng=1 if out<0 (Check by checking if MSB is a 1)
+   
+   // x + y
+   
+   // And
+   
+   
+   // Postset out, no bit
+   
+   
 }
