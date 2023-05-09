@@ -42,30 +42,44 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+   // Put your code here:
    // Preset x input, zx and nx bits
-   Mux16(a=x, b[0]=0, sel=zx, out=ox);
+   Mux16(a=x, b[0..15]=false, sel=zx, out=ox);
    // Invert x
    Not16(in=ox, out=nox);
-   Mux16(a=ox, b=nox, sel=nx, out=pre_x);
+   Mux16(a=ox, b=nox, sel=nx, out=prex);
    
    // Preset y input, zy and ny bits
-    Mux16(a=x, b[0]=0, sel=zx, out=ox);
+   Mux16(a=y, b[0..15]=false, sel=zy, out=oy);
    // Invert y
-   Not16(in=ox, out=nox);
-   Mux16(a=ox, b=nox, sel=nx, out=pre_x);
+   Not16(in=oy, out=noy);
+   Mux16(a=oy, b=noy, sel=ny, out=prey);
    
    // Select between + / And, f bit
    
    
-   // Output result, out= f(x,y) = either And(x, y) or And16(x, y), zr=1 if out=0, ng=1 if out<0 (Check by checking if MSB is a 1)
+   // Output result, out= f(x,y) = either And(x, y) or And16(x, y)
    
    // x + y
+   Add16(a=prex, b=prey, out=outadd);
    
    // And
+   And16(a=prex, b=prey, out=outand);
    
+   // Choose add if f=1, and if f=0
+   Mux16(a=outand, b=outadd, sel=f, out=result);
    
    // Postset out, no bit
+   Not16(in=result, out=nout);
+   Mux16(a=result, b=nout, sel=no, out=out, out[15]=msb, out[0..7]=leftside, out[8..15]=rightside);
+
    
+   // zr=1 if out=0, ng=1 if out<0 (Check by checking if MSB is a 1)
+   Or8Way(in=leftside, out=zr1);
+   Or8Way(in=rightside, out=zr2);
+   Or(a=zr1, b=zr2, out=zrr);
+   Not(in=zrr, out=zr);
    
+   // ng
+   And(a=msb, b=true, out=ng);
 }
